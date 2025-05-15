@@ -1,11 +1,11 @@
-import {defineConfig} from 'vite';
+import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
   envDir: '../',
   server: {
     port: 3000,
-    allowedHosts: ['governmental-multiple-offensive-competing.trycloudflare.com'],
+    allowedHosts: ['raccoonkinggames.com'],
     proxy: {
       '/api': {
         target: 'http://localhost:3001',

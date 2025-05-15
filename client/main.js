@@ -3,18 +3,20 @@ import { DiscordSDK } from "@discord/embedded-app-sdk";
 import rocketLogo from '/rocket.png';
 import "./style.css";
 
-// Will eventually store the authenticated user's access_token
+document.querySelector('#app').innerHTML = `
+  <div>
+    <img src="${rocketLogo}" class="logo" alt="Discord" />
+    <h1>Hello, World!</h1>
+  </div>
+`;
+
 let auth;
-
 const discordSdk = new DiscordSDK(import.meta.env.VITE_DISCORD_CLIENT_ID);
-
 setupDiscordSdk().then(() => {
   console.log("Discord SDK is authenticated");
-
   appendVoiceChannelName();
   appendGuildAvatar();
 });
-
 async function setupDiscordSdk() {
   await discordSdk.ready();
   console.log("Discord SDK is ready");
@@ -56,14 +58,6 @@ async function setupDiscordSdk() {
     throw new Error("Authenticate command failed");
   }
 }
-
-document.querySelector('#app').innerHTML = `
-  <div>
-    <img src="${rocketLogo}" class="logo" alt="Discord" />
-    <h1>Hello, World!</h1>
-  </div>
-`;
-
 async function appendVoiceChannelName() {
   const app = document.querySelector('#app');
 
@@ -73,7 +67,7 @@ async function appendVoiceChannelName() {
   // the dm_channels.read scope which requires Discord approval.
   if (discordSdk.channelId != null && discordSdk.guildId != null) {
     // Over RPC collect info about the channel
-    const channel = await discordSdk.commands.getChannel({channel_id: discordSdk.channelId});
+    const channel = await discordSdk.commands.getChannel({ channel_id: discordSdk.channelId });
     if (channel.name != null) {
       activityChannelName = channel.name;
     }
@@ -85,7 +79,6 @@ async function appendVoiceChannelName() {
   textTag.textContent = textTagString;
   app.appendChild(textTag);
 }
-
 async function appendGuildAvatar() {
   const app = document.querySelector('#app');
 
@@ -115,4 +108,3 @@ async function appendGuildAvatar() {
     app.appendChild(guildImg);
   }
 }
-
